@@ -980,6 +980,13 @@ public class MambaCache: ArraysCache {
     }
 }
 
+/// Simple cache for Rwkv-style models which needs 3 arrays to store the state
+public class RwkvCache: ArraysCache {
+    public init(leftPadding: [Int]? = nil) {
+        super.init(size: 3, leftPadding: leftPadding)
+    }
+}
+
 /// Composite cache that manages multiple sub-caches
 public class CacheList: BaseKVCache {
     private var caches: [KVCache]
@@ -1058,6 +1065,8 @@ public func savePromptCache(
             return "ChunkedKVCache"
         case is MambaCache:
             return "MambaCache"
+        case is RwkvCache:
+            return "RwkvCache"
         case is CacheList:
             return "CacheList"
         default:
@@ -1158,6 +1167,8 @@ public func loadPromptCache(
             cache = ChunkedKVCache()
         case "MambaCache":
             cache = MambaCache()
+        case "RwkvCache":
+            cache = RwkvCache()
         case "CacheList":
             // Note: CacheList requires special handling as it contains sub-caches
             // For now, create an empty CacheList - this may not work correctly
