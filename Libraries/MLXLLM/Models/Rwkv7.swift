@@ -208,8 +208,9 @@ private func Wkv7StepOps(r: MLXArray, w: MLXArray, k: MLXArray, v: MLXArray, a: 
     return (y, updatedState)
 }
 
-private class LoRA: Module, UnaryLayer {
-    fileprivate let lora: [UnaryLayer]
+private class LoRAMLP: Module, UnaryLayer {
+    @ModuleInfo(key: "down_proj") var downProj: Linear
+    @ModuleInfo(key: "up_proj") var upProj: Linear
     let activation: UnaryLayer
 
     public init(inputDim: Int, outputDim: Int, lowRankDim: Int, bias: Bool = true, activation: String) {
@@ -225,15 +226,12 @@ private class LoRA: Module, UnaryLayer {
             fatalError("Invalid activation: \(activation)")
         }
 
-        self.lora = [
-            Linear(inputDim, lowRankDim, bias: false),
-            self.activation,
-            Linear(lowRankDim, outputDim, bias: bias)
-        ]
+        self._downProj.wrappedValue = Linear(inputDim, lowRankDim, bias: false)
+        self._upProj.wrappedValue = Linear(lowRankDim, outputDim, bias: bias)
     }
 
     public func callAsFunction(_ x: MLXArray) -> MLXArray {
-        return self.lora[2](self.lora[1](self.lora[0](x)))
+        return self.upProj(self.activation(self.downProj(x)))
     }
 }
 
@@ -267,10 +265,10 @@ private class Rwkv7TimeMixing: Module {
     @ModuleInfo(key: "o_proj") var oProj: Linear
 
     @ModuleInfo(key: "g_norm") var gNorm: LayerNormPerHead
-    @ModuleInfo(key: "w_lora") var wLora: LoRA
-    @ModuleInfo(key: "a_lora") var aLora: LoRA
-    @ModuleInfo(key: "g_lora") var gLora: LoRA
-    @ModuleInfo(key: "v_lora") var vLora: LoRA?
+    @ModuleInfo(key: "w_lora") var wLora: LoRAMLP
+    @ModuleInfo(key: "a_lora") var aLora: LoRAMLP
+    @ModuleInfo(key: "g_lora") var gLora: LoRAMLP
+    @ModuleInfo(key: "v_lora") var vLora: LoRAMLP?
 
     init(_ config: Rwkv7Configuration, layerIdx: Int) {
         self.config = config
@@ -299,17 +297,17 @@ private class Rwkv7TimeMixing: Module {
         self._vProj.wrappedValue = Linear(hiddenSize, hiddenSize, bias: false)
         self._oProj.wrappedValue = Linear(hiddenSize, hiddenSize, bias: false)
 
-        self._wLora.wrappedValue = LoRA(
+        self._wLora.wrappedValue = LoRAMLP(
             inputDim: hiddenSize, outputDim: hiddenSize, lowRankDim: decayLowRankDim, activation: "tanh"
         )
-        self._aLora.wrappedValue = LoRA(
+        self._aLora.wrappedValue = LoRAMLP(
             inputDim: hiddenSize, outputDim: hiddenSize, lowRankDim: aLowRankDim, activation: "identity"
         )
-        self._gLora.wrappedValue = LoRA(
+        self._gLora.wrappedValue = LoRAMLP(
             inputDim: hiddenSize, outputDim: hiddenSize, lowRankDim: gateLowRankDim, bias: false, activation: "sigmoid"
         )
         if layerIdx > 0 {
-            self._vLora.wrappedValue = LoRA(
+            self._vLora.wrappedValue = LoRAMLP(
                 inputDim: hiddenSize, outputDim: hiddenSize, lowRankDim: vLowRankDim, activation: "identity"
             )
         } else {
@@ -407,14 +405,14 @@ private class Rwkv7TimeMixing: Module {
 }
 
 private class Rwkv7ChannelMixing: Module {
-    let key: Linear
-    let value: Linear
+    @ModuleInfo(key: "key") var key: Linear
+    @ModuleInfo(key: "value") var value: Linear
     let tokenShift: TokenShift
     @ModuleInfo(key: "x_k") var xK: MLXArray
 
     init(_ config: Rwkv7Configuration) {
-        self.key = Linear(config.hiddenSize, config.intermediateSize, bias: false)
-        self.value = Linear(config.intermediateSize, config.hiddenSize, bias: false)
+        self._key.wrappedValue = Linear(config.hiddenSize, config.intermediateSize, bias: false)
+        self._value.wrappedValue = Linear(config.intermediateSize, config.hiddenSize, bias: false)
         self._xK.wrappedValue = MLXArray.zeros([config.hiddenSize])
         self.tokenShift = TokenShift()
     }
@@ -470,14 +468,14 @@ private class Rwkv7Layer: Module {
 
 private class Rwkv7ModelInner: Module {
     let args: Rwkv7Configuration
-    let embeddings: Embedding
+    @ModuleInfo(key: "embeddings") var embeddings: Embedding
 
     fileprivate let layers: [Rwkv7Layer]
     let norm: LayerNorm
 
     init(_ config: Rwkv7Configuration) {
         self.args = config
-        self.embeddings = Embedding(
+        self._embeddings.wrappedValue = Embedding(
             embeddingCount: config.vocabularySize, dimensions: config.hiddenSize)
         self.layers = (0 ..< config.numHiddenLayers).map { Rwkv7Layer(config, layerIdx: $0) }
         self.norm = LayerNorm(dimensions: config.hiddenSize, eps: config.normEps)
@@ -533,6 +531,7 @@ public class Rwkv7Model: Module, LLMModel {
 
         for (key, value) in weights {
             var new_value = value
+            var new_key = key
             if value.dtype == .bfloat16 && !key.contains("embeddings") {
                 new_value = value.asType(.float16)
             }
@@ -542,7 +541,14 @@ public class Rwkv7Model: Module, LLMModel {
                     self.args.hiddenSize / self.args.headDim, self.args.headDim
                 )
             }
-            sanitizedWeights[key] = new_value
+
+            if key.contains("lora.0") {
+                new_key = key.replacingOccurrences(of: "lora.0", with: "down_proj")
+            } else if key.contains("lora.2") {
+                new_key = key.replacingOccurrences(of: "lora.2", with: "up_proj")
+            }
+
+            sanitizedWeights[new_key] = new_value
         }
 
         return sanitizedWeights
