@@ -74,6 +74,11 @@
 		C3A8B3F72B92A2A90002EFB8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A8B3F22B92A2A90002EFB8 /* ContentView.swift */; };
 		C3C7C4FB2DB19026000373CF /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3C7C4FA2DB19026000373CF /* AVKit.framework */; };
 		C3E7D94D2CF6C9B20056C095 /* StableDiffusion in Frameworks */ = {isa = PBXBuildFile; productRef = C3E7D94C2CF6C9B20056C095 /* StableDiffusion */; };
+		MLXFFI0012CF6C9B20056C095 /* MLXModelFFI.swift in Sources */ = {isa = PBXBuildFile; fileRef = MLXFFI0022CF6C9B20056C095 /* MLXModelFFI.swift */; };
+		MLXFFI0032CF6C9B20056C095 /* MLXModelFFI.h in Headers */ = {isa = PBXBuildFile; fileRef = MLXFFI0042CF6C9B20056C095 /* MLXModelFFI.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		MLXFFI0052CF6C9B20056C095 /* MLXLLM in Frameworks */ = {isa = PBXBuildFile; productRef = MLXFFI0062CF6C9B20056C095 /* MLXLLM */; };
+		MLXFFI0072CF6C9B20056C095 /* MLXLMCommon in Frameworks */ = {isa = PBXBuildFile; productRef = MLXFFI0082CF6C9B20056C095 /* MLXLMCommon */; };
+		MLXFFI0092CF6C9B20056C095 /* MLX in Frameworks */ = {isa = PBXBuildFile; productRef = MLXFFI00A2CF6C9B20056C095 /* MLX */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -276,6 +281,9 @@
 		C3C7C4FA2DB19026000373CF /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.4.sdk/System/Library/Frameworks/AVKit.framework; sourceTree = DEVELOPER_DIR; };
 		C3D573052C40701E00857A35 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		F8D7023A2BB4E223003D7CF5 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
+		MLXFFI0022CF6C9B20056C095 /* MLXModelFFI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MLXModelFFI.swift; sourceTree = "<group>"; };
+		MLXFFI0042CF6C9B20056C095 /* MLXModelFFI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MLXModelFFI.h; sourceTree = "<group>"; };
+		MLXFFI00B2CF6C9B20056C095 /* MLXModelFFI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MLXModelFFI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -417,6 +425,16 @@
 				C32A18052CFFD19F0092A5B6 /* MLXLLM in Frameworks */,
 				81695B412BA373D300F260D8 /* MarkdownUI in Frameworks */,
 				C32B4C6F2DA71ADC00EF663D /* AsyncAlgorithms in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		MLXFFI00F2CF6C9B20056C095 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				MLXFFI0052CF6C9B20056C095 /* MLXLLM in Frameworks */,
+				MLXFFI0072CF6C9B20056C095 /* MLXLMCommon in Frameworks */,
+				MLXFFI0092CF6C9B20056C095 /* MLX in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -594,6 +612,7 @@
 				C3208E6E2DB19451006AE6CA /* MLXLMTests.xctest */,
 				0F5AD7412DB70C0300745C06 /* MLXChatExample.app */,
 				C3132C232DFB2FFB00270E8E /* ExampleLLM */,
+				MLXFFI00B2CF6C9B20056C095 /* MLXModelFFI.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -626,6 +645,7 @@
 				C34E49222B6A026F00FCB841 /* mnist-tool */,
 				C34E48F32B696F0B00FCB841 /* llm-tool */,
 				C39273762B606A0A00368D5D /* Tutorial */,
+				MLXFFI00C2CF6C9B20056C095 /* MLXModelFFI */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -696,7 +716,35 @@
 			path = Configuration;
 			sourceTree = "<group>";
 		};
+		MLXFFI00C2CF6C9B20056C095 /* MLXModelFFI */ = {
+			isa = PBXGroup;
+			children = (
+				MLXFFI0022CF6C9B20056C095 /* MLXModelFFI.swift */,
+				MLXFFI00D2CF6C9B20056C095 /* include */,
+			);
+			path = MLXModelFFI;
+			sourceTree = "<group>";
+		};
+		MLXFFI00D2CF6C9B20056C095 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				MLXFFI0042CF6C9B20056C095 /* MLXModelFFI.h */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		MLXFFI0102CF6C9B20056C095 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				MLXFFI0032CF6C9B20056C095 /* MLXModelFFI.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
 		0AC74EBA2D136221003C90A7 /* VLMEval */ = {
@@ -980,6 +1028,28 @@
 			productReference = C3A8B3DC2B92A29E0002EFB8 /* LLMEval.app */;
 			productType = "com.apple.product-type.application";
 		};
+		MLXFFI0112CF6C9B20056C095 /* MLXModelFFI */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = MLXFFI0122CF6C9B20056C095 /* Build configuration list for PBXNativeTarget "MLXModelFFI" */;
+			buildPhases = (
+				MLXFFI0102CF6C9B20056C095 /* Headers */,
+				MLXFFI00E2CF6C9B20056C095 /* Sources */,
+				MLXFFI00F2CF6C9B20056C095 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MLXModelFFI;
+			packageProductDependencies = (
+				MLXFFI0062CF6C9B20056C095 /* MLXLLM */,
+				MLXFFI0082CF6C9B20056C095 /* MLXLMCommon */,
+				MLXFFI00A2CF6C9B20056C095 /* MLX */,
+			);
+			productName = MLXModelFFI;
+			productReference = MLXFFI00B2CF6C9B20056C095 /* MLXModelFFI.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -987,7 +1057,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1630;
+				LastSwiftUpdateCheck = 2600;
 				LastUpgradeCheck = 1500;
 				TargetAttributes = {
 					0F5AD7402DB70C0300745C06 = {
@@ -1060,6 +1130,7 @@
 				C3208E6D2DB19451006AE6CA /* MLXLMTests */,
 				0F5AD7402DB70C0300745C06 /* MLXChatExample */,
 				C3132C222DFB2FFB00270E8E /* ExampleLLM */,
+				MLXFFI0112CF6C9B20056C095 /* MLXModelFFI */,
 			);
 		};
 /* End PBXProject section */
@@ -1245,6 +1316,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		MLXFFI00E2CF6C9B20056C095 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				MLXFFI0012CF6C9B20056C095 /* MLXModelFFI.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
@@ -1397,6 +1476,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_ASSET_PATHS = "\"Applications/MLXChatExample/Support/Preview Content\"";
+				DEVELOPMENT_TEAM = SDF4UW849V;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
@@ -1463,6 +1543,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"Applications/MLXChatExample/Support/Preview Content\"";
+				DEVELOPMENT_TEAM = SDF4UW849V;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -3098,6 +3179,119 @@
 			};
 			name = Release;
 		};
+		MLXFFI0132CF6C9B20056C095 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.2;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = mlx.MLXModelFFI;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		MLXFFI0142CF6C9B20056C095 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.2;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = mlx.MLXModelFFI;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 5.0;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -3223,6 +3417,15 @@
 			buildConfigurations = (
 				C3A8B3E92B92A29E0002EFB8 /* Debug */,
 				C3A8B3EA2B92A29E0002EFB8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		MLXFFI0122CF6C9B20056C095 /* Build configuration list for PBXNativeTarget "MLXModelFFI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				MLXFFI0132CF6C9B20056C095 /* Debug */,
+				MLXFFI0142CF6C9B20056C095 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -3412,6 +3615,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C397D8F22CD2F60B00B87EE2 /* XCLocalSwiftPackageReference "Libraries/.." */;
 			productName = StableDiffusion;
+		};
+		MLXFFI0062CF6C9B20056C095 /* MLXLLM */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C397D8F22CD2F60B00B87EE2 /* XCLocalSwiftPackageReference "Libraries/.." */;
+			productName = MLXLLM;
+		};
+		MLXFFI0082CF6C9B20056C095 /* MLXLMCommon */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C397D8F22CD2F60B00B87EE2 /* XCLocalSwiftPackageReference "Libraries/.." */;
+			productName = MLXLMCommon;
+		};
+		MLXFFI00A2CF6C9B20056C095 /* MLX */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C32A18442D00E13E0092A5B6 /* XCRemoteSwiftPackageReference "mlx-swift" */;
+			productName = MLX;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
