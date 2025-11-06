@@ -16,7 +16,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "MLXFFI0112CF6C9B20056C095"
-               BuildableName = "MLXModelFFI.framework"
+               BuildableName = "libMLXModelFFI.a"
                BlueprintName = "MLXModelFFI"
                ReferencedContainer = "container:mlx-swift-examples.xcodeproj">
             </BuildableReference>
@@ -51,7 +51,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "MLXFFI0112CF6C9B20056C095"
-            BuildableName = "MLXModelFFI.framework"
+            BuildableName = "libMLXModelFFI.a"
             BlueprintName = "MLXModelFFI"
             ReferencedContainer = "container:mlx-swift-examples.xcodeproj">
          </BuildableReference>
