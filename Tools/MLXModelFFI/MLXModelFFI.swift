@@ -99,6 +99,7 @@ public func mlx_model_load(_ cPath: UnsafePointer<CChar>?) -> UnsafeMutableRawPo
 public func mlx_model_release(_ handle: UnsafeMutableRawPointer?) {
     guard let handle else { return }
     Unmanaged<ModelContext>.fromOpaque(handle).release()
+    GPU.clearCache()
 }
 
 // MARK: - Configuration API
